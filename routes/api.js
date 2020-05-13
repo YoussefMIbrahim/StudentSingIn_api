@@ -34,12 +34,12 @@ router.patch('/students/:id', function(req,res,next){
                 return res.status(404).send('notfound')
             }
             return res.send('ok')
+        }).catch (err =>{
+            if(err instanceof Sequelize.ValidationError){
+                let message = err.errors.map( (e) => e.message)
+                return res.status(400).json(message)
+            }
         })
-}).catch (err =>{
-    if(err instanceof Sequelize.ValidationError){
-        let message = err.errors.map( (e) => e.message)
-        return res.status(400).json(message)
-    }
 })
 
 router.delete('/students/:id' , function(req,res,next){
